@@ -3,9 +3,9 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:wildlifenl_map_logic_components/src/interfaces/location_service_interface.dart';
-import 'package:wildlifenl_map_logic_components/src/interfaces/map_service_interface.dart';
-import 'package:wildlifenl_map_logic_components/src/interfaces/map_state_interface.dart';
+import '../interfaces/location_service_interface.dart';
+import '../interfaces/map_service_interface.dart';
+import '../interfaces/map_state_interface.dart';
 
 class NetherlandsMapManager
     implements
@@ -23,7 +23,10 @@ class NetherlandsMapManager
       : defaultCenter = defaultCenter ?? MapStateInterface.defaultCenter;
 
   static const String standardTileUrl =
-      'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+      'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png';
+  static const List<String> standardTileSubdomains = ['a', 'b', 'c'];
+  static const String standardAttributionText =
+      '© OpenTopoMap · © OpenStreetMap contributors';
   static const String satelliteTileUrl =
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
 

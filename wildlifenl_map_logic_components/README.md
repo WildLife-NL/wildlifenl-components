@@ -16,7 +16,7 @@ dependencies:
 
 - **LocationServiceInterface** – `determinePosition()`, `getAddressFromPosition()`, `isLocationInNetherlands()`
 - **MapServiceInterface** – `constrainLatLng()`, `getAddressFromLatLng()`, `isLocationInNetherlands()`
-- **MapStateInterface** – `constrainMapCamera()`, `animateToLocation()`, plus `defaultCenter`, `standardTileUrl`, `satelliteTileUrl`
+- **MapStateInterface** – `constrainMapCamera()`, `animateToLocation()`, plus `defaultCenter`, `standardTileUrl`, `standardTileSubdomains`, `standardAttributionText`, `satelliteTileUrl`
 
 ### Standaardimplementatie
 
@@ -31,6 +31,28 @@ final manager = NetherlandsMapManager(
 await manager.determinePosition();
 manager.animateToLocation(mapController: ctrl, targetLocation: latlng, targetZoom: 14, vsync: this);
 ```
+
+### Standaardkaart (OpenTopoMap)
+
+De standaard tegel-URL is OpenTopoMap. Gebruik in je `FlutterMap` een `TileLayer` met subdomains en toon de verplichte naamsvermelding:
+
+```dart
+FlutterMap(
+  options: MapOptions(...),
+  children: [
+    TileLayer(
+      urlTemplate: MapStateInterface.standardTileUrl,
+      subdomains: MapStateInterface.standardTileSubdomains,  // ['a','b','c']
+      userAgentPackageName: 'nl.wildlife.rapport',  // of je app package
+    ),
+  ],
+  nonRotatedChildren: [
+    StandardMapAttribution(),  // © OpenTopoMap · © OpenStreetMap contributors (rechtsonder)
+  ],
+);
+```
+
+Alternatief: `SimpleStandardMapAttribution()` voor een altijd zichtbare tekstbox.
 
 ## Wild Rapport
 
