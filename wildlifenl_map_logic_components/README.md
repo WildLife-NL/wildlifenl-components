@@ -32,27 +32,30 @@ await manager.determinePosition();
 manager.animateToLocation(mapController: ctrl, targetLocation: latlng, targetZoom: 14, vsync: this);
 ```
 
-### Standaardkaart (OpenTopoMap)
+### Standaardkaart (OpenTopoMap) – aanbevolen: gebruik [WildLifeNLMap]
 
-De standaard tegel-URL is OpenTopoMap. Gebruik in je `FlutterMap` een `TileLayer` met subdomains en toon de verplichte naamsvermelding:
+Om **altijd** OpenTopoMap en de juiste bronvermelding te tonen, gebruik de gedeelde widget **WildLifeNLMap**. Die zet zelf de juiste TileLayer + subdomains + attribution; je hoeft geen URL meer te kiezen.
 
 ```dart
-FlutterMap(
-  options: MapOptions(...),
-  children: [
-    TileLayer(
-      urlTemplate: MapStateInterface.standardTileUrl,
-      subdomains: MapStateInterface.standardTileSubdomains,  // ['a','b','c']
-      userAgentPackageName: 'nl.wildlife.rapport',  // of je app package
-    ),
+import 'package:wildlifenl_map_logic_components/wildlifenl_map_logic_components.dart';
+
+// In je scherm (bijv. kaart_overview_screen):
+WildLifeNLMap(
+  userAgentPackageName: 'nl.wildlife.rapport',  // of jouw app package
+  mapController: _mapController,
+  options: MapOptions(
+    initialCenter: MapStateInterface.defaultCenter,
+    initialZoom: 10,
+  ),
+  extraLayers: [
+    MarkerLayer(markers: [...]),  // optioneel
   ],
-  nonRotatedChildren: [
-    StandardMapAttribution(),  // © OpenTopoMap · © OpenStreetMap contributors (rechtsonder)
-  ],
-);
+)
 ```
 
-Alternatief: `SimpleStandardMapAttribution()` voor een altijd zichtbare tekstbox.
+Vervang je bestaande `FlutterMap` + `TileLayer` in de app door deze widget; dan verdwijnt de oude OpenStreetMap-tegels en zie je OpenTopoMap met bronvermelding.
+
+Handmatig (als je toch zelf FlutterMap bouwt): gebruik `MapStateInterface.standardTileUrl` + `standardTileSubdomains` en zet `StandardMapAttribution()` in `nonRotatedChildren`.
 
 ## Wild Rapport
 
