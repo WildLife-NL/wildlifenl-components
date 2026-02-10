@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
-/// Unified responsive utilities with both proportional scaling and breakpoint logic.
 class ResponsiveUtils {
   final BuildContext context;
   late final Size _screenSize;

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wildlifenl_map_ui_components/src/constants/colors.dart';
 
-/// WildLifeNL-styled filter dropdown. Geef [value] en [items]; [onChanged] wordt aangeroepen bij selectie.
-/// Herbruikbaar voor categorie-, type- of andere filters in lijsten/overzichten.
 class WildLifeNLFilterDropdown extends StatelessWidget {
   final String value;
   final List<String> items;

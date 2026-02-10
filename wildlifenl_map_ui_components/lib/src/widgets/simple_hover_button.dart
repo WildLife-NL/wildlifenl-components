@@ -2,8 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:wildlifenl_map_ui_components/src/constants/colors.dart';
 
-/// WildLifeNL knop met hover/press-styling (donkergroen bij actief).
-/// Geschikt voor desktop/web en mobiel.
 class SimpleHoverButton extends StatefulWidget {
   final String text;
   final VoidCallback? onPressed;

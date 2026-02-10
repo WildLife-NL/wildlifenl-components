@@ -1,1 +1,10 @@
 include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    prefer_const_constructors: false
+    prefer_const_declarations: false
+    prefer_final_locals: false
+    prefer_final_fields: false
+    use_key_in_widget_constructors: false
+    avoid_print: false

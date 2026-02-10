@@ -7,15 +7,11 @@ import 'package:wildlifenl_map_logic_components/src/interfaces/location_service_
 import 'package:wildlifenl_map_logic_components/src/interfaces/map_service_interface.dart';
 import 'package:wildlifenl_map_logic_components/src/interfaces/map_state_interface.dart';
 
-/// Standaardimplementatie: Nederland-bounds, geolocatie, geocoding en camera-animatie.
-/// Geschikt voor Wild Rapport en WildManager. Optioneel [defaultCenter] voor wanneer
-/// geen GPS beschikbaar is (bijv. mock locatie).
 class NetherlandsMapManager
     implements
         LocationServiceInterface,
         MapServiceInterface,
         MapStateInterface {
-  /// Nederland grenzen
   static const double minLat = 50.75;
   static const double maxLat = 53.55;
   static const double minLng = 3.35;

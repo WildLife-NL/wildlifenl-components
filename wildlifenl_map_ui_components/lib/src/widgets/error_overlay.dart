@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:wildlifenl_map_ui_components/src/constants/colors.dart';
 import 'package:wildlifenl_map_ui_components/src/utils/responsive_utils.dart';
 
-/// WildLifeNL error overlay: shows one or more messages with optional title.
 class ErrorOverlay extends StatelessWidget {
   final List<String> messages;
   final String? title;

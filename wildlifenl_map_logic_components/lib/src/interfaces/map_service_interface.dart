@@ -1,6 +1,5 @@
 import 'package:latlong2/latlong.dart';
 
-/// Interface voor kaartservices: bounds, geocoding, constrain.
 abstract class MapServiceInterface {
   LatLng constrainLatLng(LatLng point);
   Future<String> getAddressFromLatLng(LatLng point);

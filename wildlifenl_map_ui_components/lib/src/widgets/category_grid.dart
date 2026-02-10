@@ -4,10 +4,6 @@ import 'package:wildlifenl_map_ui_components/src/models/category_grid_item.dart'
 import 'package:wildlifenl_map_ui_components/src/widgets/circle_icon_container.dart';
 import 'package:wildlifenl_map_ui_components/src/widgets/back_button.dart';
 
-/// WildLifeNL grid van selecteerbare categorieën (icoon + tekst).
-/// [items]: lijst met text + optioneel iconPath (asset).
-/// [onItemSelected]: wordt aangeroepen met de gekozen item.text.
-/// [onBackPressed]: optioneel; als gezet wordt onderaan een Terug-knop getoond.
 class WildLifeNLCategoryGrid extends StatelessWidget {
   final List<CategoryGridItem> items;
   final ValueChanged<String> onItemSelected;
