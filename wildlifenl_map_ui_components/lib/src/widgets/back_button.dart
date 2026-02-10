@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wildlifenl_map_ui_components/src/constants/colors.dart';
 
-/// WildLifeNL-styled "Terug" (back) button. Herbruikbaar op schermen en in filters.
 class WildLifeNLBackButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String label;

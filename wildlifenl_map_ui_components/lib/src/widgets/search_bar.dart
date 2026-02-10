@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wildlifenl_map_ui_components/src/constants/colors.dart';
 
-/// WildLifeNL-styled zoekbalk met icoon en optionele clear-knop.
-/// [controller] en [onChanged] bepalen de inhoud; [hint] is de placeholder.
 class WildLifeNLSearchBar extends StatelessWidget {
   final TextEditingController controller;
   final ValueChanged<String> onChanged;

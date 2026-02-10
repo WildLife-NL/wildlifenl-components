@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// WildLifeNL brand and UI colors. Use in any app that uses wildlifenl_map_ui_components.
 class WildLifeNLColors {
   WildLifeNLColors._();
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// Model for the WildLifeNL brown button (text, icons, sizing).
 class BrownButtonModel {
   static const double defaultButtonHeight = 48.0;
   static const double defaultArrowIconSize = 24.0;

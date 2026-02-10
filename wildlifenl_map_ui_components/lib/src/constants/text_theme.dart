@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wildlifenl_map_ui_components/src/constants/colors.dart';
 
-/// WildLifeNL text styles. Uses WildLifeNLColors.
 class WildLifeNLTextTheme {
   WildLifeNLTextTheme._();
 

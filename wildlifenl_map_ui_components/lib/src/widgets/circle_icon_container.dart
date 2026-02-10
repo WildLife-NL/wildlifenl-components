@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wildlifenl_map_ui_components/src/constants/colors.dart';
 
-/// Circular container for an icon or image. WildLifeNL style.
 class CircleIconContainer extends StatelessWidget {
   final double? size;
   final Color? backgroundColor;

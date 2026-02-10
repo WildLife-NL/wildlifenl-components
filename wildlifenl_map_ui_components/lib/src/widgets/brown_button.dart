@@ -4,7 +4,6 @@ import 'package:wildlifenl_map_ui_components/src/models/brown_button_model.dart'
 import 'package:wildlifenl_map_ui_components/src/utils/responsive_utils.dart';
 import 'package:wildlifenl_map_ui_components/src/widgets/circle_icon_container.dart';
 
-/// WildLifeNL brown primary button. Supports text and optional left/right icons.
 class BrownButton extends StatelessWidget {
   final BrownButtonModel? model;
   final VoidCallback onPressed;

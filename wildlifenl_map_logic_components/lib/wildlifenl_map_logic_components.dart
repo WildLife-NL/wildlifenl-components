@@ -1,7 +1,3 @@
-/// WildLifeNL Map Logic Components – gedeelde kaartlogica (Wild Rapport, WildManager).
-///
-/// - Interfaces: [LocationServiceInterface], [MapServiceInterface], [MapStateInterface]
-/// - Standaardimplementatie: [NetherlandsMapManager]
 library wildlifenl_map_logic_components;
 
 export 'src/interfaces/location_service_interface.dart';
