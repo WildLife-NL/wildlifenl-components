@@ -63,7 +63,7 @@ class WildLifeNLMap extends StatelessWidget {
       options: options,
       children: layers,
       nonRotatedChildren: const [
-        StandardMapAttribution(),
+        SimpleStandardMapAttribution(),
       ],
     );
   }
