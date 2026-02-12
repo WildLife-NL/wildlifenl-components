@@ -31,10 +31,9 @@ class HttpLoginApiClient implements LoginApiClient {
 
   @override
   Future<void> sendLoginCode(String displayNameApp, String email) async {
-    // Send both camelCase and snake_case so backend accepts either
+    // API test-api-wildlifenl.uu.nl verwacht camelCase (displayNameApp), geen snake_case.
     final body = jsonEncode({
       'displayNameApp': displayNameApp,
-      'display_name_app': displayNameApp,
       'email': email.trim(),
     });
     final response = await http
@@ -42,6 +41,9 @@ class HttpLoginApiClient implements LoginApiClient {
         .timeout(_timeout);
 
     if (response.statusCode != HttpStatus.ok) {
+      if (response.statusCode == 422) {
+        debugPrint('Auth 422 response: ${response.body}');
+      }
       final msg = _parseErrorResponse(response.statusCode, response.body);
       throw Exception(msg);
     }
@@ -49,11 +51,10 @@ class HttpLoginApiClient implements LoginApiClient {
 
   @override
   Future<Map<String, dynamic>> verifyCode(String email, String code) async {
-    // Send both camelCase and snake_case so backend accepts either
+    // Trim voorkomt 422 (API verwacht RFC 5322, geen newline/whitespace in email).
     final body = jsonEncode({
-      'email': email,
-      'code': code,
-      'verification_code': code,
+      'email': email.trim(),
+      'code': code.trim(),
     });
     final response = await http
         .put(_authUri, headers: _jsonHeaders, body: body)
@@ -65,16 +66,25 @@ class HttpLoginApiClient implements LoginApiClient {
     } catch (_) {}
 
     if (response.statusCode != HttpStatus.ok) {
+      if (response.statusCode == 422) {
+        debugPrint('Auth 422 response: ${response.body}');
+      }
       final msg = _parseErrorResponse(response.statusCode, response.body, json);
       throw Exception(msg);
     }
 
     final data = json!;
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_tokenKey, data['token'] as String? ?? '');
+    // Ondersteun zowel 'token' als 'access_token' (verschillende API-conventies)
+    final token = (data['token'] ?? data['access_token'])?.toString().trim();
+    await prefs.setString(_tokenKey, token ?? '');
 
     try {
-      final scopesRaw = data['scopes'];
+      // Scopes kunnen top-level of onder data['user'] staan
+      var scopesRaw = data['scopes'];
+      if (scopesRaw == null && data['user'] is Map) {
+        scopesRaw = (data['user'] as Map)['scopes'];
+      }
       if (scopesRaw is List) {
         final scopes = scopesRaw
             .whereType<String>()

@@ -71,10 +71,10 @@ class _VerificationCodeInputState extends State<VerificationCodeInput> {
     }
   }
 
-  Widget _buildTextField(int index) {
+  Widget _buildTextField(int index, [double? maxBoxWidth]) {
     final ru = context.loginResponsive;
-    final boxWidth = ru.width > 600 ? ru.wp(10) : ru.wp(13);
-    final fontSize = ru.fontSize(22);
+    final boxWidth = maxBoxWidth ?? (ru.width > 600 ? ru.wp(10) : ru.wp(13));
+    final fontSize = (boxWidth * 0.45).clamp(14.0, 22.0);
 
     return Container(
       width: boxWidth,
@@ -213,9 +213,16 @@ class _VerificationCodeInputState extends State<VerificationCodeInput> {
           ),
         ],
         SizedBox(height: ru.spacing(20)),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: List.generate(6, (i) => _buildTextField(i)),
+        LayoutBuilder(
+          builder: (context, constraints) {
+            const gap = 8.0;
+            final availableWidth = constraints.maxWidth;
+            final boxSize = ((availableWidth - 5 * gap) / 6).clamp(24.0, 120.0);
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: List.generate(6, (i) => _buildTextField(i, boxSize)),
+            );
+          },
         ),
         SizedBox(height: ru.spacing(24)),
         SizedBox(
