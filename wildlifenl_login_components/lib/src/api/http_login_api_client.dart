@@ -41,9 +41,6 @@ class HttpLoginApiClient implements LoginApiClient {
         .timeout(_timeout);
 
     if (response.statusCode != HttpStatus.ok) {
-      if (response.statusCode == 422) {
-        debugPrint('Auth 422 response: ${response.body}');
-      }
       final msg = _parseErrorResponse(response.statusCode, response.body);
       throw Exception(msg);
     }
@@ -66,9 +63,6 @@ class HttpLoginApiClient implements LoginApiClient {
     } catch (_) {}
 
     if (response.statusCode != HttpStatus.ok) {
-      if (response.statusCode == 422) {
-        debugPrint('Auth 422 response: ${response.body}');
-      }
       final msg = _parseErrorResponse(response.statusCode, response.body, json);
       throw Exception(msg);
     }
@@ -126,8 +120,16 @@ class HttpLoginApiClient implements LoginApiClient {
       }
     }
     if (json['message'] != null) return json['message'].toString();
-    // Common validation shape: { "field_name": ["error1", "error2"] }
+    // Test-API: errors is List of { "message": "...", "location": "..." }
     final errors = json['errors'];
+    if (errors is List) {
+      final parts = <String>[];
+      for (final e in errors) {
+        if (e is Map && e['message'] != null) parts.add(e['message'].toString());
+      }
+      if (parts.isNotEmpty) return parts.join('; ');
+    }
+    // Andere API's: errors is Map { "field": ["msg1", "msg2"] }
     if (errors is Map) {
       final parts = <String>[];
       for (final entry in errors.entries) {
