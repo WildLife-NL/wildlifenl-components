@@ -183,13 +183,19 @@ class _WildLifeNLLoginScreenState extends State<WildLifeNLLoginScreen> {
           ? Row(
               children: [
                 Expanded(flex: showTwoColumn ? 3 : 2, child: branding),
-                Expanded(flex: showTwoColumn ? 4 : 3, child: form),
+                Expanded(
+                  flex: showTwoColumn ? 4 : 3,
+                  child: SingleChildScrollView(child: form),
+                ),
               ],
             )
           : Column(
               children: [
                 Expanded(flex: 1, child: branding),
-                Expanded(flex: 1, child: form),
+                Expanded(
+                  flex: 1,
+                  child: SingleChildScrollView(child: form),
+                ),
               ],
             ),
     );

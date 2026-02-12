@@ -31,6 +31,7 @@ class _VerificationCodeInputState extends State<VerificationCodeInput> {
   late final LoginInterface loginManager;
   bool isLoading = false;
   bool isError = false;
+  String? _errorDetail;
 
   @override
   void initState() {
@@ -53,12 +54,20 @@ class _VerificationCodeInputState extends State<VerificationCodeInput> {
       widget.onVerificationSuccess(context, user);
     } catch (e) {
       if (!mounted) return;
+      final msg = e is Exception ? e.toString() : e.toString();
+      final detail = msg.replaceFirst('Exception: ', '').trim();
       setState(() {
         isLoading = false;
         isError = true;
+        _errorDetail = detail.isNotEmpty ? detail : null;
       });
       for (var c in controllers) c.clear();
       focusNodes[0].requestFocus();
+      if (detail.isNotEmpty && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(detail), duration: const Duration(seconds: 6)),
+        );
+      }
     }
   }
 
@@ -149,6 +158,7 @@ class _VerificationCodeInputState extends State<VerificationCodeInput> {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
         Row(
           children: [
@@ -159,12 +169,14 @@ class _VerificationCodeInputState extends State<VerificationCodeInput> {
               },
               icon: Icon(Icons.arrow_back_rounded, color: theme.accentColor),
             ),
-            Text(
-              'Voer de verificatiecode in',
-              style: TextStyle(
-                fontSize: ru.fontSize(16),
-                fontWeight: FontWeight.w500,
-                color: theme.accentColor,
+            Flexible(
+              child: Text(
+                'Voer de verificatiecode in',
+                style: TextStyle(
+                  fontSize: ru.fontSize(16),
+                  fontWeight: FontWeight.w500,
+                  color: theme.accentColor,
+                ),
               ),
             ),
           ],
@@ -172,13 +184,31 @@ class _VerificationCodeInputState extends State<VerificationCodeInput> {
         if (isError) ...[
           Padding(
             padding: EdgeInsets.only(left: ru.wp(5), top: ru.hp(1.2)),
-            child: Text(
-              'Verkeerde code. Probeer het opnieuw.',
-              style: TextStyle(
-                color: theme.effectiveErrorColor,
-                fontSize: ru.fontSize(14),
-                fontWeight: FontWeight.w500,
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Verkeerde code. Probeer het opnieuw.',
+                  style: TextStyle(
+                    color: theme.effectiveErrorColor,
+                    fontSize: ru.fontSize(14),
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                if (_errorDetail != null && _errorDetail!.isNotEmpty) ...[
+                  SizedBox(height: ru.spacing(6)),
+                  Text(
+                    _errorDetail!,
+                    style: TextStyle(
+                      color: theme.effectiveErrorColor,
+                      fontSize: ru.fontSize(12),
+                    ),
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ],
             ),
           ),
         ],
@@ -187,7 +217,7 @@ class _VerificationCodeInputState extends State<VerificationCodeInput> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: List.generate(6, (i) => _buildTextField(i)),
         ),
-        const Spacer(),
+        SizedBox(height: ru.spacing(24)),
         SizedBox(
           width: double.infinity,
           child: FilledButton(
@@ -210,7 +240,6 @@ class _VerificationCodeInputState extends State<VerificationCodeInput> {
             ),
           ),
         ),
-        const Spacer(flex: 2),
       ],
     );
   }

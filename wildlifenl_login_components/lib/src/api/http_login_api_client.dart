@@ -24,38 +24,39 @@ class HttpLoginApiClient implements LoginApiClient {
 
   Uri get _authUri => Uri.parse(baseUrl).resolve('auth/');
 
+  static const _jsonHeaders = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+  };
+
   @override
   Future<void> sendLoginCode(String displayNameApp, String email) async {
+    // Send both camelCase and snake_case so backend accepts either
     final body = jsonEncode({
       'displayNameApp': displayNameApp,
+      'display_name_app': displayNameApp,
       'email': email.trim(),
     });
     final response = await http
-        .post(
-          _authUri,
-          headers: {'Content-Type': 'application/json'},
-          body: body,
-        )
+        .post(_authUri, headers: _jsonHeaders, body: body)
         .timeout(_timeout);
 
     if (response.statusCode != HttpStatus.ok) {
-      final msg = _tryParseDetail(response.body) ?? response.body;
+      final msg = _parseErrorResponse(response.statusCode, response.body);
       throw Exception(msg);
     }
   }
 
   @override
   Future<Map<String, dynamic>> verifyCode(String email, String code) async {
+    // Send both camelCase and snake_case so backend accepts either
     final body = jsonEncode({
-      'code': code,
       'email': email,
+      'code': code,
+      'verification_code': code,
     });
     final response = await http
-        .put(
-          _authUri,
-          headers: {'Content-Type': 'application/json'},
-          body: body,
-        )
+        .put(_authUri, headers: _jsonHeaders, body: body)
         .timeout(_timeout);
 
     Map<String, dynamic>? json;
@@ -64,7 +65,7 @@ class HttpLoginApiClient implements LoginApiClient {
     } catch (_) {}
 
     if (response.statusCode != HttpStatus.ok) {
-      final msg = json != null ? (json['detail'] ?? json.toString()) : response.body;
+      final msg = _parseErrorResponse(response.statusCode, response.body, json);
       throw Exception(msg);
     }
 
@@ -91,11 +92,41 @@ class HttpLoginApiClient implements LoginApiClient {
     return data;
   }
 
-  static String? _tryParseDetail(String body) {
-    try {
-      final m = jsonDecode(body);
-      if (m is Map && m['detail'] != null) return m['detail'].toString();
-    } catch (_) {}
-    return null;
+  /// Builds a readable error message from API response (e.g. 422 validation errors).
+  static String _parseErrorResponse(int statusCode, String body, [Map<String, dynamic>? json]) {
+    json ??= (() {
+      try {
+        return jsonDecode(body) as Map<String, dynamic>?;
+      } catch (_) {}
+      return null;
+    })();
+    if (json == null) return body.isNotEmpty ? body : 'HTTP $statusCode';
+    // Prefer 'detail' (string or list of validation errors)
+    final detail = json['detail'];
+    if (detail != null) {
+      if (detail is String) return detail;
+      if (detail is List) {
+        final parts = detail.map((e) {
+          if (e is Map && (e['msg'] != null || e['message'] != null)) {
+            return (e['msg'] ?? e['message']).toString();
+          }
+          return e.toString();
+        }).toList();
+        if (parts.isNotEmpty) return parts.join('; ');
+      }
+    }
+    if (json['message'] != null) return json['message'].toString();
+    // Common validation shape: { "field_name": ["error1", "error2"] }
+    final errors = json['errors'];
+    if (errors is Map) {
+      final parts = <String>[];
+      for (final entry in errors.entries) {
+        final key = entry.key;
+        final list = entry.value is List ? entry.value as List : [entry.value];
+        for (final v in list) parts.add('$key: $v');
+      }
+      if (parts.isNotEmpty) return parts.join('; ');
+    }
+    return body;
   }
 }
