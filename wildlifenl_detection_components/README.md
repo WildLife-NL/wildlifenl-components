@@ -47,3 +47,46 @@ final detections = list.map((e) => Detection.fromJson(e)).toList();
 | radius    | int    | ja   | Straal in meters (1 t/m 10000) |
 
 Authorization: Bearer token in de `Authorization` header.
+
+## Detections op de kaart (pins)
+
+Pins kunnen per **type** een kleur krijgen en per **soort** een icoon in de pin.
+
+- **DetectionType** – `visual`, `acoustic`, `chemical`, `other` met kleur (rood, oranje, groen, grijs).
+- **getPinStyleForDetection(detection)** – geeft `DetectionPinStyle` (color + icon) op basis van `detection['type']` en `detection['species']` (of `animal_species`).
+- **defaultSpeciesIcons** – map soort → IconData; **iconForSpecies(species)** voor fallback.
+- **detectionLatitude(d)** / **detectionLongitude(d)** – haal coördinaten uit een detection-map (keys: `latitude`/`longitude` of `lat`/`lng`).
+
+Filters (client-side):
+
+- **filterDetectionsByType(detections, type)** – filter op type.
+- **filterDetectionsByTimePeriod(detections, start:, end:)** – filter op tijd (key `moment` of custom).
+- **detectionHasLocation(d)** – of de detection coördinaten heeft.
+
+Voorbeeld: markers op de kaart (in de app, met flutter_map):
+
+```dart
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:wildlifenl_detection_components/wildlifenl_detection_components.dart';
+
+final detections = await api.getDetectionsByFilter(...);
+final withLocation = detections.where(detectionHasLocation).toList();
+final filtered = filterDetectionsByType(withLocation, DetectionType.visual);
+
+final markers = filtered.map((d) {
+  final style = getPinStyleForDetection(d);
+  final lat = detectionLatitude(d)!;
+  final lng = detectionLongitude(d)!;
+  return Marker(
+    point: LatLng(lat, lng),
+    child: Icon(Icons.place, color: style.color, size: 32),
+    // of custom pin met style.icon erin
+  );
+}).toList();
+
+// In FlutterMap children:
+MarkerLayer(markers: markers)
+```
+
+Area/zoom: gebruik voor de API `latitude`, `longitude` en `radius` op basis van het kaartcentrum en zoomniveau (bijv. grotere radius bij lager zoom).
