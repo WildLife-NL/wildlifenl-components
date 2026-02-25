@@ -1,0 +1,16 @@
+name: wildlifenl_visitation_components
+description: WildLifeNL Visitation – API voor GET /visitation/ (recreatiedruk per cel in een Living Lab). Geschikt voor heatmap-laag op de kaart.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.7.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.3.0
+  shared_preferences: ^2.5.3
+
+dev_dependencies:
+  flutter_lints: ^5.0.0
