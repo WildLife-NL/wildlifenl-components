@@ -59,7 +59,7 @@ String? getAnimalIconPath(String? speciesName) {
   if (name.contains('bever') || name.contains('beaver')) return '$packagePrefix/assets/icons/animals/beaver.png';
   if (name.contains('boommarten') || name.contains('marten')) return '$packagePrefix/assets/icons/animals/boommarten.png';
   if (name.contains('hooglander') || name.contains('highlander')) return '$packagePrefix/assets/icons/animals/hooglander.png';
-  if (name.contains('wisent') || name.contains('bison')) return '$packagePrefix/assets/icons/animals/winsent.png';
+  if (name.contains('wisent') || name.contains('bison')) return '$packagePrefix/assets/icons/animals/wisent.png';
   if (name.contains('edelhert') || name.contains('red deer')) return '$packagePrefix/assets/icons/animals/edelhert.png';
   if (name.contains('steenmarter')) return '$packagePrefix/assets/icons/animals/steenmarter.png';
   if (name.contains('bunzing')) return '$packagePrefix/assets/icons/animals/bunzing.png';
@@ -124,6 +124,6 @@ List<String> getAllAnimalAssetPaths() {
     '$packagePrefix/assets/icons/animals/beaver.png',
     '$packagePrefix/assets/icons/animals/boommarten.png',
     '$packagePrefix/assets/icons/animals/hooglander.png',
-    '$packagePrefix/assets/icons/animals/winsent.png',
+    '$packagePrefix/assets/icons/animals/wisent.png',
   ];
 }
