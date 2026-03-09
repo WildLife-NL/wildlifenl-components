@@ -1,0 +1,22 @@
+name: wildlifenl_animal_components
+description: WildLifeNL animals API – ophalen dieren in een tijd-ruimtebereik en weergave met dier-iconen.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.7.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.2.0
+  latlong2: ^0.9.0
+  shared_preferences: ^2.2.2
+  wildlifenl_assets:
+    git:
+      url: https://github.com/WildLife-NL/wildlifenl-components.git
+      ref: Wildlife-rapport-Components
+      path: wildlifenl_assets_components
+
+dev_dependencies:
+  flutter_lints: ^5.0.0

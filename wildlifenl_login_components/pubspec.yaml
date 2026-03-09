@@ -1,0 +1,17 @@
+name: wildlifenl_login_components
+description: WildLifeNL Login – herbruikbare login-UI en interface voor e-mail/verificatiecode. Gebruik in Wild Rapport, WildManager en andere apps.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.7.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  provider: ^6.1.4
+  http: ^1.3.0
+  shared_preferences: ^2.5.3
+
+dev_dependencies:
+  flutter_lints: ^5.0.0
