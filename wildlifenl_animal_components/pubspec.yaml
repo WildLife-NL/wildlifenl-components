@@ -15,7 +15,7 @@ dependencies:
   wildlifenl_assets:
     git:
       url: https://github.com/WildLife-NL/wildlifenl-components.git
-      ref: Wildlife-rapport-Components
+      ref: main
       path: wildlifenl_assets_components
 
 dev_dependencies:
