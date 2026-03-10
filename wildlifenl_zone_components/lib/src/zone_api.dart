@@ -16,12 +16,32 @@ class ZoneApi {
 
   static const Duration _timeout = Duration(seconds: 30);
 
+  Map<String, String> _headers(String? token) {
+    return {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      if (token != null && token.isNotEmpty) 'Authorization': 'Bearer $token',
+    };
+  }
+
+  Future<List<Zone>> getMyZones() async {
+    final token = await getToken();
+    final uri = Uri.parse(baseUrl.endsWith('/') ? '${baseUrl}zones/me/' : '$baseUrl/zones/me/');
+    final response = await http.get(uri, headers: _headers(token)).timeout(_timeout);
+    if (response.statusCode != HttpStatus.ok) return [];
+    try {
+      final list = jsonDecode(response.body) as List;
+      return list.map((e) => Zone.fromJson(e as Map<String, dynamic>)).toList();
+    } catch (_) {
+      return [];
+    }
+  }
+
   Future<Zone?> addZone(ZoneCreateRequest request) async {
     final token = await getToken();
     final uri = Uri.parse(baseUrl.endsWith('/') ? '${baseUrl}zone/' : '$baseUrl/zone/');
-    final headers = _headers(token);
     final response = await http
-        .post(uri, headers: headers, body: jsonEncode(request.toJson()))
+        .post(uri, headers: _headers(token), body: jsonEncode(request.toJson()))
         .timeout(_timeout);
     if (response.statusCode == HttpStatus.ok) {
       try {
@@ -34,11 +54,10 @@ class ZoneApi {
   Future<Zone?> addSpeciesToZone(String zoneId, String speciesId) async {
     final token = await getToken();
     final uri = Uri.parse(baseUrl.endsWith('/') ? '${baseUrl}zone/species/' : '$baseUrl/zone/species/');
-    final headers = _headers(token);
     final response = await http
         .post(
           uri,
-          headers: headers,
+          headers: _headers(token),
           body: jsonEncode({'zoneID': zoneId, 'speciesID': speciesId}),
         )
         .timeout(_timeout);
@@ -48,13 +67,5 @@ class ZoneApi {
       } catch (_) {}
     }
     return null;
-  }
-
-  Map<String, String> _headers(String? token) {
-    return {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      if (token != null && token.isNotEmpty) 'Authorization': 'Bearer $token',
-    };
   }
 }
