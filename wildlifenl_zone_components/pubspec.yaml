@@ -1,6 +1,6 @@
 name: wildlifenl_zone_components
-description: Zone API and models for adding zones (POST /zone/). Usable with any backend that exposes the Zone API.
-version: 1.0.0
+description: Zone API and models (add zone, add species to zone). Usable with any backend that exposes the Zone API.
+version: 1.1.0
 publish_to: 'none'
 
 environment:
