@@ -68,4 +68,35 @@ class ZoneApi {
     }
     return null;
   }
+
+  Future<Zone?> removeSpeciesFromZone(String zoneId, String speciesId) async {
+    final token = await getToken();
+    final uri = Uri.parse(baseUrl.endsWith('/') ? '${baseUrl}zone/species/' : '$baseUrl/zone/species/');
+    final response = await http
+        .put(
+          uri,
+          headers: _headers(token),
+          body: jsonEncode({'zoneID': zoneId, 'speciesID': speciesId}),
+        )
+        .timeout(_timeout);
+    if (response.statusCode == HttpStatus.ok) {
+      try {
+        return Zone.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
+      } catch (_) {}
+    }
+    return null;
+  }
+
+  Future<Zone?> deactivateZone(String zoneId) async {
+    final token = await getToken();
+    final path = 'zone/$zoneId';
+    final uri = Uri.parse(baseUrl.endsWith('/') ? '$baseUrl$path' : '$baseUrl/$path');
+    final response = await http.delete(uri, headers: _headers(token)).timeout(_timeout);
+    if (response.statusCode == HttpStatus.ok) {
+      try {
+        return Zone.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
+      } catch (_) {}
+    }
+    return null;
+  }
 }
