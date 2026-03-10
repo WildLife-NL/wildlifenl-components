@@ -18,7 +18,7 @@ class ZoneApi {
 
   Future<Zone?> addZone(ZoneCreateRequest request) async {
     final token = await getToken();
-    final uri = Uri.parse(baseUrl.endsWith('/') ? '$baseUrlzone/' : '$baseUrl/zone/');
+ final uri = Uri.parse(baseUrl.endsWith('/') ? '${baseUrl}zone/' : '$baseUrl/zone/');
     final headers = {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
