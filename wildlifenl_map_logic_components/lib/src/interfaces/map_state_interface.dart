@@ -9,7 +9,7 @@ abstract class MapStateInterface {
 
   /// CARTO Light (OpenStreetMap-data) als standaard tegellaag.
   static const String standardTileUrl =
-      'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+      'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
 
   /// Subdomains voor CARTO tile endpoint.
   static const List<String> standardTileSubdomains = ['a', 'b', 'c', 'd'];
@@ -22,7 +22,7 @@ abstract class MapStateInterface {
   /// in [RichAttributionWidget] of [SimpleAttributionWidget] in
   /// [FlutterMap.nonRotatedChildren].
   static const String standardAttributionText =
-      '\u00A9 OpenStreetMap contributors \u00B7 \u00A9 CARTO';
+      '\u00A9 OpenStreetMap contributors \u00B7 \u00A9 CartoDB';
 
   void constrainMapCamera(MapController mapController);
 
