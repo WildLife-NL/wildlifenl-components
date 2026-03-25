@@ -1,13 +1,13 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 
 import '../interfaces/map_state_interface.dart';
 
-/// Standaard naamsvermelding voor de OpenTopoMap-kaartlaag.
+/// Standaard naamsvermelding voor de OpenStreetMap-kaartlaag.
 ///
 /// Gebruik in [FlutterMap.nonRotatedChildren] zodat de attribution rechtsonder
 /// (of standaardpositie) op de kaart zichtbaar is, conform de vereisten van
-/// OpenTopoMap en OpenStreetMap.
+/// OpenStreetMap.
 ///
 /// Voorbeeld:
 /// ```dart
@@ -28,7 +28,7 @@ class StandardMapAttribution extends StatelessWidget {
       alignment: AttributionAlignment.bottomRight,
       attributions: [
         TextSourceAttribution(
-          'OpenTopoMap',
+          'OpenStreetMap',
           textStyle: const TextStyle(fontSize: 12),
         ),
         TextSourceAttribution(
