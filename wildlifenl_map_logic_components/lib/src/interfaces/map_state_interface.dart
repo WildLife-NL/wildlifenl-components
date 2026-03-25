@@ -7,20 +7,22 @@ abstract class MapStateInterface {
   /// Default centrum wanneer geen locatie beschikbaar (bijv. Nederland).
   static const LatLng defaultCenter = LatLng(52.088130, 5.170465);
 
-  /// OpenStreetMap Shortbread standaard tiles.
+  /// CARTO Light (OpenStreetMap-data) als standaard tegellaag.
   static const String standardTileUrl =
-      'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+      'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
 
-  /// Geen subdomains nodig voor OpenStreetMap Shortbread endpoint.
-  static const List<String> standardTileSubdomains = <String>[];
+  /// Subdomains voor CARTO tile endpoint.
+  static const List<String> standardTileSubdomains = ['a', 'b', 'c', 'd'];
 
   /// Satellite/imagery tiles.
   static const String satelliteTileUrl =
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
 
-  /// Tekst voor naamsvermelding standaardlaag (OpenStreetMap). Gebruik in
-  /// [RichAttributionWidget] of [SimpleAttributionWidget] in [FlutterMap.nonRotatedChildren].
-  static const String standardAttributionText = '© OpenStreetMap contributors';
+  /// Tekst voor naamsvermelding standaardlaag (OpenStreetMap + CARTO). Gebruik
+  /// in [RichAttributionWidget] of [SimpleAttributionWidget] in
+  /// [FlutterMap.nonRotatedChildren].
+  static const String standardAttributionText =
+      '\u00A9 OpenStreetMap contributors \u00B7 \u00A9 CARTO';
 
   void constrainMapCamera(MapController mapController);
 

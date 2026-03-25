@@ -3,21 +3,7 @@ import 'package:flutter_map/flutter_map.dart';
 
 import '../interfaces/map_state_interface.dart';
 
-/// Standaard naamsvermelding voor de OpenStreetMap-kaartlaag.
-///
-/// Gebruik in [FlutterMap.nonRotatedChildren] zodat de attribution rechtsonder
-/// (of standaardpositie) op de kaart zichtbaar is, conform de vereisten van
-/// OpenStreetMap.
-///
-/// Voorbeeld:
-/// ```dart
-/// FlutterMap(
-///   ...
-///   nonRotatedChildren: [
-///     StandardMapAttribution(),
-///   ],
-/// )
-/// ```
+/// Standaard naamsvermelding voor de CARTO Light-kaartlaag (OSM-data).
 class StandardMapAttribution extends StatelessWidget {
   const StandardMapAttribution({super.key});
 
@@ -26,24 +12,20 @@ class StandardMapAttribution extends StatelessWidget {
     return RichAttributionWidget(
       animationConfig: const ScaleRAWA(),
       alignment: AttributionAlignment.bottomRight,
-      attributions: [
-        TextSourceAttribution(
-          'OpenStreetMap',
-          textStyle: const TextStyle(fontSize: 12),
-        ),
+      attributions: const [
         TextSourceAttribution(
           'OpenStreetMap contributors',
-          textStyle: const TextStyle(fontSize: 12),
+          textStyle: TextStyle(fontSize: 12),
+        ),
+        TextSourceAttribution(
+          'CARTO',
+          textStyle: TextStyle(fontSize: 12),
         ),
       ],
     );
   }
 }
 
-/// Eenvoudige tekst-attribution voor de standaardkaart (zelfde bronvermelding).
-///
-/// Alternatief voor [StandardMapAttribution] als je een klassieke, altijd
-/// zichtbare tekstbox wilt in plaats van de uitgeklapte RichAttributionWidget.
 class SimpleStandardMapAttribution extends StatelessWidget {
   const SimpleStandardMapAttribution({super.key});
 
