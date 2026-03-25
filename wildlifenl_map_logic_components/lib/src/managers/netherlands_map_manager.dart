@@ -23,10 +23,10 @@ class NetherlandsMapManager
       : defaultCenter = defaultCenter ?? MapStateInterface.defaultCenter;
 
   static const String standardTileUrl =
-      'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+      'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
   static const List<String> standardTileSubdomains = ['a', 'b', 'c', 'd'];
   static const String standardAttributionText =
-      '\u00A9 OpenStreetMap contributors \u00B7 \u00A9 CARTO';
+      '\u00A9 OpenStreetMap contributors \u00B7 \u00A9 CartoDBDB';
   static const String satelliteTileUrl =
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
 
