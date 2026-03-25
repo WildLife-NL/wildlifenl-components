@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -23,10 +23,10 @@ class NetherlandsMapManager
       : defaultCenter = defaultCenter ?? MapStateInterface.defaultCenter;
 
   static const String standardTileUrl =
-      'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png';
-  static const List<String> standardTileSubdomains = ['a', 'b', 'c'];
+      'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+  static const List<String> standardTileSubdomains = <String>[];
   static const String standardAttributionText =
-      '© OpenTopoMap · © OpenStreetMap contributors';
+      '\u00A9 OpenStreetMap contributors';
   static const String satelliteTileUrl =
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
 
@@ -174,3 +174,4 @@ class NetherlandsMapManager
     );
   }
 }
+
