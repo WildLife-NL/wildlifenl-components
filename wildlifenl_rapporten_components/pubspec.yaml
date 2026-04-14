@@ -1,0 +1,7 @@
+name: wildlifenl_rapporten_components
+description: Builds interaction request bodies for WildLifeNL rapporten API (waarneming, gewasschade, dieraanrijding).
+version: 1.0.0
+publish_to: 'none'
+
+environment:
+  sdk: ^3.7.0

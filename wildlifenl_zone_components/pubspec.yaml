@@ -1,0 +1,10 @@
+name: wildlifenl_zone_components
+description: Zone API and models (get my zones, add zone, add species to zone). Usable with any backend that exposes the Zone API.
+version: 1.2.0
+publish_to: 'none'
+
+environment:
+  sdk: ^3.7.0
+
+dependencies:
+  http: ^1.3.0

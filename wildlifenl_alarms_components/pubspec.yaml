@@ -1,0 +1,11 @@
+name: wildlifenl_alarms_components
+description: Models and components for Wildlife NL alarms (GET /alarms/me/).
+version: 0.0.1
+publish_to: none
+
+environment:
+  sdk: ^3.7.0
+
+dependencies:
+  flutter:
+    sdk: flutter
