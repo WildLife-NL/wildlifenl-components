@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 
 import 'package:wildlifenl_login_components/src/api/login_api_client.dart';
 import 'package:wildlifenl_login_components/src/interfaces/login_interface.dart';
@@ -48,12 +48,16 @@ class DefaultLoginService implements LoginInterface {
 
   @override
   void setVerificationVisible(bool visible) {
-    for (final l in _listeners) l();
+    for (final l in _listeners) {
+      l();
+    }
   }
 
   @override
   void setError(bool isError, [String message = '']) {
-    for (final l in _listeners) l();
+    for (final l in _listeners) {
+      l();
+    }
   }
 
   @override

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:wildlifenl_login_components/src/interfaces/login_interface.dart';
@@ -26,7 +26,8 @@ class VerificationCodeInput extends StatefulWidget {
 }
 
 class _VerificationCodeInputState extends State<VerificationCodeInput> {
-  final List<TextEditingController> controllers = List.generate(6, (_) => TextEditingController());
+  final List<TextEditingController> controllers =
+      List.generate(6, (_) => TextEditingController());
   final List<FocusNode> focusNodes = List.generate(6, (_) => FocusNode());
   late final LoginInterface loginManager;
   bool isLoading = false;
@@ -61,7 +62,9 @@ class _VerificationCodeInputState extends State<VerificationCodeInput> {
         isError = true;
         _errorDetail = detail.isNotEmpty ? detail : null;
       });
-      for (var c in controllers) c.clear();
+      for (var c in controllers) {
+        c.clear();
+      }
       focusNodes[0].requestFocus();
       if (detail.isNotEmpty && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -110,7 +113,11 @@ class _VerificationCodeInputState extends State<VerificationCodeInput> {
           focusNode: focusNodes[index],
           textAlign: TextAlign.center,
           keyboardType: TextInputType.number,
-          style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold, color: Colors.black),
+          style: TextStyle(
+            fontSize: fontSize,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
           inputFormatters: [
             LengthLimitingTextInputFormatter(1),
             FilteringTextInputFormatter.digitsOnly,
@@ -128,7 +135,8 @@ class _VerificationCodeInputState extends State<VerificationCodeInput> {
             if (value.isNotEmpty) {
               if (index < 5) {
                 focusNodes[index + 1].requestFocus();
-              } else if (index == 5 && controllers.every((c) => c.text.isNotEmpty)) {
+              } else if (index == 5 &&
+                  controllers.every((c) => c.text.isNotEmpty)) {
                 _verifyCode();
               }
             } else if (value.isEmpty && index > 0) {
@@ -243,7 +251,10 @@ class _VerificationCodeInputState extends State<VerificationCodeInput> {
             onPressed: _resendCode,
             child: Text(
               'Code niet ontvangen? Stuur opnieuw',
-              style: TextStyle(color: theme.accentColor, decoration: TextDecoration.underline),
+              style: TextStyle(
+                color: theme.accentColor,
+                decoration: TextDecoration.underline,
+              ),
             ),
           ),
         ),
@@ -261,15 +272,21 @@ class _VerificationCodeInputState extends State<VerificationCodeInput> {
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Kon code niet verzenden. Probeer het later opnieuw.')),
+        const SnackBar(
+          content: Text('Kon code niet verzenden. Probeer het later opnieuw.'),
+        ),
       );
     }
   }
 
   @override
   void dispose() {
-    for (var c in controllers) c.dispose();
-    for (var n in focusNodes) n.dispose();
+    for (var c in controllers) {
+      c.dispose();
+    }
+    for (var n in focusNodes) {
+      n.dispose();
+    }
     super.dispose();
   }
 }

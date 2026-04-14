@@ -1,4 +1,4 @@
-import 'dart:convert';
+﻿import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -59,7 +59,9 @@ class HttpLoginApiClient implements LoginApiClient {
 
     Map<String, dynamic>? json;
     try {
-      json = response.body.isNotEmpty ? jsonDecode(response.body) as Map<String, dynamic>? : null;
+      json = response.body.isNotEmpty
+          ? jsonDecode(response.body) as Map<String, dynamic>?
+          : null;
     } catch (_) {}
 
     if (response.statusCode != HttpStatus.ok) {
@@ -97,7 +99,11 @@ class HttpLoginApiClient implements LoginApiClient {
   }
 
   /// Builds a readable error message from API response (e.g. 422 validation errors).
-  static String _parseErrorResponse(int statusCode, String body, [Map<String, dynamic>? json]) {
+  static String _parseErrorResponse(
+    int statusCode,
+    String body, [
+    Map<String, dynamic>? json,
+  ]) {
     json ??= (() {
       try {
         return jsonDecode(body) as Map<String, dynamic>?;
@@ -135,7 +141,9 @@ class HttpLoginApiClient implements LoginApiClient {
       for (final entry in errors.entries) {
         final key = entry.key;
         final list = entry.value is List ? entry.value as List : [entry.value];
-        for (final v in list) parts.add('$key: $v');
+        for (final v in list) {
+          parts.add('$key: $v');
+        }
       }
       if (parts.isNotEmpty) return parts.join('; ');
     }

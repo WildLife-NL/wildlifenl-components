@@ -1,6 +1,6 @@
 ﻿# wildlifenl_map_logic_components
 
-**WildLifeNL Map Logic Components** â€“ gedeelde kaartlogica voor Wild Rapport en WildManager: camera-bounds, locatie, geocoding, Nederland-manager.
+**WildLifeNL Map Logic Components** - gedeelde kaartlogica voor Wild Rapport en WildManager: camera-bounds, locatie, geocoding, Nederland-manager.
 
 ## Gebruik
 
@@ -14,9 +14,9 @@ dependencies:
 
 ### Interfaces
 
-- **LocationServiceInterface** â€“ `determinePosition()`, `getAddressFromPosition()`, `isLocationInNetherlands()`
-- **MapServiceInterface** â€“ `constrainLatLng()`, `getAddressFromLatLng()`, `isLocationInNetherlands()`
-- **MapStateInterface** â€“ `constrainMapCamera()`, `animateToLocation()`, plus `defaultCenter`, `standardTileUrl`, `standardTileSubdomains`, `standardAttributionText`, `satelliteTileUrl`
+- **LocationServiceInterface** - `determinePosition()`, `getAddressFromPosition()`, `isLocationInNetherlands()`
+- **MapServiceInterface** - `constrainLatLng()`, `getAddressFromLatLng()`, `isLocationInNetherlands()`
+- **MapStateInterface** - `constrainMapCamera()`, `animateToLocation()`, plus `defaultCenter`, `standardTileUrl`, `standardTileSubdomains`, `standardAttributionText`, `satelliteTileUrl`
 
 ### Standaardimplementatie
 
@@ -32,9 +32,9 @@ await manager.determinePosition();
 manager.animateToLocation(mapController: ctrl, targetLocation: latlng, targetZoom: 14, vsync: this);
 ```
 
-### Standaardkaart (OpenStreetMap) â€“ aanbevolen: gebruik [WildLifeNLMap]
+### Standaardkaart (CARTO Voyager) - aanbevolen: gebruik [WildLifeNLMap]
 
-Om **altijd** OpenStreetMap en de juiste bronvermelding te tonen, gebruik de gedeelde widget **WildLifeNLMap**. Die zet zelf de juiste TileLayer + subdomains + attribution; je hoeft geen URL meer te kiezen.
+Om **altijd** CARTO Voyager (OpenStreetMap-data) en de juiste bronvermelding te tonen, gebruik de gedeelde widget **WildLifeNLMap**. Die zet zelf de juiste TileLayer + subdomains + attribution; je hoeft geen URL meer te kiezen.
 
 ```dart
 import 'package:wildlifenl_map_logic_components/wildlifenl_map_logic_components.dart';
@@ -53,10 +53,11 @@ WildLifeNLMap(
 )
 ```
 
-Vervang je bestaande `FlutterMap` + `TileLayer` in de app door deze widget; dan verdwijnt de oude OpenStreetMap-tegels en zie je OpenStreetMap met bronvermelding.
+Vervang je bestaande `FlutterMap` + `TileLayer` in de app door deze widget; dan verdwijnt de oude OpenStreetMap-tegels en zie je CARTO Voyager met bronvermelding.
 
 Handmatig (als je toch zelf FlutterMap bouwt): gebruik `MapStateInterface.standardTileUrl` + `standardTileSubdomains` en zet `StandardMapAttribution()` in `nonRotatedChildren`.
 
 ## Wild Rapport
 
 De app gebruikt een eigen **LocationMapManager** die van `NetherlandsMapManager` extends en mock-locatie toevoegt; de interfaces worden hier hergebruikt via deze package.
+

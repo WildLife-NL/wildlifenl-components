@@ -1,5 +1,4 @@
-import 'dart:ui';
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 
 /// Eenvoudige responsive helper binnen de package (geen dependency op map_ui).
 class LoginResponsive {
@@ -24,3 +23,4 @@ class LoginResponsive {
 extension LoginResponsiveContext on BuildContext {
   LoginResponsive get loginResponsive => LoginResponsive(this);
 }
+
