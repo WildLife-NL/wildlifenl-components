@@ -20,7 +20,7 @@ abstract class MapStateInterface {
 
   /// Tekst voor naamsvermelding standaardlaag (OpenStreetMap + CARTO). Gebruik
   /// in [RichAttributionWidget] of [SimpleAttributionWidget] in
-  /// [FlutterMap.nonRotatedChildren].
+  /// `FlutterMap.children`.
   static const String standardAttributionText =
       '\u00A9 OpenStreetMap contributors \u00B7 \u00A9 CartoDB';
 
@@ -34,3 +34,4 @@ abstract class MapStateInterface {
     Duration duration = const Duration(milliseconds: 500),
   });
 }
+
