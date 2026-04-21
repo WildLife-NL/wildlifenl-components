@@ -11,7 +11,7 @@ import '../models/add_interaction_input.dart';
 const String _tokenKey = 'bearer_token';
 const Duration _timeout = Duration(seconds: 30);
 
-/// Standaardimplementatie: GET interactions/me/, GET interactions/query/
+/// Standaardimplementatie: GET interactions/me/, GET interactions/
 /// en POST interaction/ met Bearer token uit SharedPreferences.
 class HttpInteractionReadApi implements InteractionReadApiInterface {
   HttpInteractionReadApi({
@@ -70,23 +70,30 @@ class HttpInteractionReadApi implements InteractionReadApiInterface {
 
   @override
   Future<List<Map<String, dynamic>>> queryInteractions({
-    required double areaLatitude,
-    required double areaLongitude,
-    required int areaRadiusMeters,
+    required double latitude,
+    required double longitude,
+    required int radius,
+    DateTime? start,
+    DateTime? end,
     DateTime? momentAfter,
     DateTime? momentBefore,
   }) async {
+    final resolvedStart = start ?? momentAfter;
+    final resolvedEnd = end ?? momentBefore;
+
+    if (resolvedStart == null || resolvedEnd == null) {
+      throw ArgumentError('queryInteractions requires start and end DateTime');
+    }
+
     final params = <String, String>{
-      'area_latitude': areaLatitude.toString(),
-      'area_longitude': areaLongitude.toString(),
-      'area_radius': areaRadiusMeters.toString(),
-      if (momentAfter != null)
-        'moment_after': momentAfter.toUtc().toIso8601String(),
-      if (momentBefore != null)
-        'moment_before': momentBefore.toUtc().toIso8601String(),
+      'latitude': latitude.toString(),
+      'longitude': longitude.toString(),
+      'radius': radius.toString(),
+      'start': resolvedStart.toUtc().toIso8601String(),
+      'end': resolvedEnd.toUtc().toIso8601String(),
     };
     final query = Uri(queryParameters: params).query;
-    final path = 'interactions/query/?$query';
+    final path = 'interactions/?$query';
     final res = await _get(path);
     if (res.statusCode == HttpStatus.ok) {
       final body = res.body.trim();
@@ -107,7 +114,10 @@ class HttpInteractionReadApi implements InteractionReadApiInterface {
       return [];
     }
     if (res.statusCode == HttpStatus.unauthorized) {
-      throw Exception('Unauthorized (401) on interactions/query/');
+      throw Exception('Unauthorized (401) on interactions/');
+    }
+    if (res.statusCode == HttpStatus.unprocessableEntity) {
+      throw Exception('Validation failed (422) on interactions/: ${res.body}');
     }
     throw Exception('Query failed (${res.statusCode}): ${res.body}');
   }
