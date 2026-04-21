@@ -1,4 +1,4 @@
-import 'dart:convert';
+﻿import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,7 +10,7 @@ const Duration _timeout = Duration(seconds: 30);
 const int _minRadiusMeters = 1;
 const int _maxRadiusMeters = 10000;
 
-/// Standaardimplementatie: GET animal/ met query params en Bearer token.
+/// Standaardimplementatie: GET animals/ met query params en Bearer token.
 class HttpAnimalReadApi implements AnimalReadApiInterface {
   HttpAnimalReadApi({
     required this.baseUrl,
@@ -52,7 +52,7 @@ class HttpAnimalReadApi implements AnimalReadApiInterface {
       'radius': r.toString(),
     };
     final query = Uri(queryParameters: params).query;
-    final path = 'animal/?$query';
+    final path = 'animals/?$query';
     final res = await _get(path);
 
     if (res.statusCode == 200) {
@@ -72,7 +72,8 @@ class HttpAnimalReadApi implements AnimalReadApiInterface {
           .toList();
     }
     if (res.statusCode == 204 || res.statusCode == 404) return [];
-    if (res.statusCode == 401) throw Exception('Unauthorized (401) on GET animal/');
+    if (res.statusCode == 401) throw Exception('Unauthorized (401) on GET animals/');
     throw Exception('Animal request failed (${res.statusCode}): ${res.body}');
   }
 }
+

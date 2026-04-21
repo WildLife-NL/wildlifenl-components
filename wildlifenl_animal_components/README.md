@@ -1,9 +1,9 @@
-# wildlifenl_animal_components
+﻿# wildlifenl_animal_components
 
 Component voor het ophalen van **dieren binnen een tijd-ruimtebereik** (spatiotemporal span) en weergave met dier-iconen.
 
 - **Scopes:** nature-area-manager, wildlife-manager, herd-manager
-- **API:** `GET animals/?start=...&end=...&latitude=...&longitude=...&radius=...` met Bearer token
+- **API:** `GET /animals/` met query `start`, `end`, `latitude`, `longitude`, `radius` en Bearer token
 
 ## Gebruik
 
@@ -42,3 +42,4 @@ wildlifenl_animal_components:
     ref: Wildlife-rapport-Components
     path: wildlifenl_animal_components
 ```
+
