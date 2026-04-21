@@ -1,6 +1,6 @@
 ﻿# wildlifenl_interaction_components
 
-API voor interactions: ophalen van "mijn interactions" (GET `interactions/me/`), filterquery (GET `interactions/`) en toevoegen (POST `interaction/`). Geschikt voor Wild Rapport, WildManager en andere apps die dezelfde backend gebruiken.
+API voor interactions: ophalen van "mijn interactions" (GET `interactions/me/`), filterquery (GET `interactions/`), ophalen op ID (GET `interaction/{id}`) en toevoegen (POST `interaction/`). Geschikt voor Wild Rapport, WildManager en andere apps die dezelfde backend gebruiken.
 
 ## Gebruik
 
@@ -17,7 +17,7 @@ dependencies:
 
 ### Interface + standaardimplementatie
 
-- **InteractionReadApiInterface** – `getMyInteractions()`, `queryInteractions(...)`, `addInteraction(...)`.
+- **InteractionReadApiInterface** – `getMyInteractions()`, `getInteractionById(...)`, `queryInteractions(...)`, `addInteraction(...)`.
 - **HttpInteractionReadApi** – gebruikt `baseUrl` en Bearer token uit SharedPreferences (`bearer_token`).
 
 De API retourneert lijsten van `Map<String, dynamic>` (ruwe JSON) voor GETs. De app kan die zelf parsen met eigen modellen.
@@ -31,6 +31,9 @@ final api = HttpInteractionReadApi(baseUrl: 'https://api.example.com');
 
 // Mijn interactions
 final list = await api.getMyInteractions();
+
+// Interaction op ID
+final one = await api.getInteractionById('3892eb50-4697-4c72-aadc-32b766bce3c0');
 
 // Query op gebied (GET /interactions/ met start/end/latitude/longitude/radius)
 final queryList = await api.queryInteractions(

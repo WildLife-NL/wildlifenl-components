@@ -11,8 +11,8 @@ import '../models/add_interaction_input.dart';
 const String _tokenKey = 'bearer_token';
 const Duration _timeout = Duration(seconds: 30);
 
-/// Standaardimplementatie: GET interactions/me/, GET interactions/
-/// en POST interaction/ met Bearer token uit SharedPreferences.
+/// Standaardimplementatie: GET interactions/me/, GET interactions/,
+/// GET interaction/{id} en POST interaction/ met Bearer token uit SharedPreferences.
 class HttpInteractionReadApi implements InteractionReadApiInterface {
   HttpInteractionReadApi({
     required this.baseUrl,
@@ -69,6 +69,26 @@ class HttpInteractionReadApi implements InteractionReadApiInterface {
   }
 
   @override
+  Future<Map<String, dynamic>> getInteractionById(String id) async {
+    final res = await _get('interaction/$id');
+    if (res.statusCode != HttpStatus.ok) {
+      if (res.statusCode == HttpStatus.unauthorized) {
+        throw Exception('Unauthorized (401) on interaction/$id');
+      }
+      if (res.statusCode == HttpStatus.notFound) {
+        throw Exception('Interaction not found (404): $id');
+      }
+      throw Exception('Get interaction failed (${res.statusCode}): ${res.body}');
+    }
+
+    final body = res.body.trim();
+    if (body.isEmpty) return <String, dynamic>{};
+    final decoded = jsonDecode(body);
+    if (decoded is Map) return Map<String, dynamic>.from(decoded);
+    throw Exception('Unexpected response shape for GET /interaction/{id}');
+  }
+
+  @override
   Future<List<Map<String, dynamic>>> queryInteractions({
     required double latitude,
     required double longitude,
@@ -95,6 +115,7 @@ class HttpInteractionReadApi implements InteractionReadApiInterface {
     final query = Uri(queryParameters: params).query;
     final path = 'interactions/?$query';
     final res = await _get(path);
+
     if (res.statusCode == HttpStatus.ok) {
       final body = res.body.trim();
       if (body.isEmpty) return [];
@@ -109,6 +130,7 @@ class HttpInteractionReadApi implements InteractionReadApiInterface {
           .map((e) => Map<String, dynamic>.from(e))
           .toList();
     }
+
     if (res.statusCode == HttpStatus.noContent ||
         res.statusCode == HttpStatus.notFound) {
       return [];

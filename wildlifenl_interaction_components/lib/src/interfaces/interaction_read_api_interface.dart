@@ -6,6 +6,9 @@ abstract class InteractionReadApiInterface {
   /// Retourneert ruwe JSON-objecten; de app kan die met eigen modellen parsen.
   Future<List<Map<String, dynamic>>> getMyInteractions();
 
+  /// GET interaction/{id} – haal een specifieke interaction op.
+  Future<Map<String, dynamic>> getInteractionById(String id);
+
   /// GET interactions/ met spatiotemporele filter.
   ///
   /// Vereist: [latitude], [longitude], [radius], [start], [end].
