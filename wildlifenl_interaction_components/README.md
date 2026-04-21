@@ -1,4 +1,4 @@
-# wildlifenl_interaction_components
+﻿# wildlifenl_interaction_components
 
 API voor het ophalen van interactions: "mijn interactions" (GET interactions/me/) en gebiedsquery (GET interactions/query/). Geschikt voor Wild Rapport, WildManager en andere apps die dezelfde backend gebruiken.
 
@@ -17,8 +17,8 @@ dependencies:
 
 ### Interface + standaardimplementatie
 
-- **InteractionReadApiInterface** – `getMyInteractions()` en `queryInteractions(...)`.
-- **HttpInteractionReadApi** – gebruikt `baseUrl` en Bearer token uit SharedPreferences (`bearer_token`).
+- **InteractionReadApiInterface** â€“ `getMyInteractions()` en `queryInteractions(...)`.
+- **HttpInteractionReadApi** â€“ gebruikt `baseUrl` en Bearer token uit SharedPreferences (`bearer_token`).
 
 De API retourneert **lijsten van `Map<String, dynamic>`** (ruwe JSON). De app parsed die met eigen modellen (bijv. `MyInteraction.fromJson(map)`, `InteractionQueryResult.fromJson(map)`).
 
@@ -44,3 +44,26 @@ final results = queryList.map((e) => InteractionQueryResult.fromJson(e)).toList(
 ```
 
 Send interaction (POST interaction/) blijft app-specifiek (verschillende report-typen per app) en zit niet in deze package.
+### Nieuw: typed schema-models (optioneel)
+
+Voor de nieuwe Interaction API-schema kun je nu direct typed records parsen:
+
+- `InteractionRecord`
+- `InteractionGeoPoint`
+- `InteractionTypeInfo`
+- `InteractionUserInfo`
+- `InteractionSpeciesInfo`
+- `InteractionQuestionnaireInfo`
+- `parseInteractionRecords(...)`
+
+Voorbeeld:
+
+```dart
+import 'package:wildlifenl_interaction_components/wildlifenl_interaction_components.dart';
+
+final raw = await api.getMyInteractions();
+final interactions = parseInteractionRecords(raw);
+```
+
+De bestaande API blijft ook hetzelfde (`List<Map<String, dynamic>>`), dus huidige app-code blijft werken.
+

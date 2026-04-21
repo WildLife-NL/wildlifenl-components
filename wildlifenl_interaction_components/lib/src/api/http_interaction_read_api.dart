@@ -1,17 +1,18 @@
-import 'dart:convert';
+﻿import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:wildlifenl_interaction_components/src/interfaces/interaction_read_api_interface.dart';
+import '../interfaces/interaction_read_api_interface.dart';
+import '../models/add_interaction_input.dart';
 
 const String _tokenKey = 'bearer_token';
 const Duration _timeout = Duration(seconds: 30);
 
-/// Standaardimplementatie: GET interactions/me/ en GET interactions/query/
-/// met Bearer token uit SharedPreferences.
+/// Standaardimplementatie: GET interactions/me/, GET interactions/query/
+/// en POST interaction/ met Bearer token uit SharedPreferences.
 class HttpInteractionReadApi implements InteractionReadApiInterface {
   HttpInteractionReadApi({
     required this.baseUrl,
@@ -33,6 +34,20 @@ class HttpInteractionReadApi implements InteractionReadApiInterface {
       if (token != null && token.isNotEmpty) 'Authorization': 'Bearer $token',
     };
     final res = await http.get(uri, headers: headers).timeout(_timeout);
+    return res;
+  }
+
+  Future<http.Response> _post(String path, Map<String, dynamic> body) async {
+    final token = await _getToken();
+    final uri = Uri.parse(baseUrl).resolve(path);
+    final headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      if (token != null && token.isNotEmpty) 'Authorization': 'Bearer $token',
+    };
+    final res = await http
+        .post(uri, headers: headers, body: jsonEncode(body))
+        .timeout(_timeout);
     return res;
   }
 
@@ -73,7 +88,7 @@ class HttpInteractionReadApi implements InteractionReadApiInterface {
     final query = Uri(queryParameters: params).query;
     final path = 'interactions/query/?$query';
     final res = await _get(path);
-    if (res.statusCode == 200) {
+    if (res.statusCode == HttpStatus.ok) {
       final body = res.body.trim();
       if (body.isEmpty) return [];
       final decoded = jsonDecode(body);
@@ -87,8 +102,32 @@ class HttpInteractionReadApi implements InteractionReadApiInterface {
           .map((e) => Map<String, dynamic>.from(e))
           .toList();
     }
-    if (res.statusCode == 204 || res.statusCode == 404) return [];
-    if (res.statusCode == 401) throw Exception('Unauthorized (401) on interactions/query/');
+    if (res.statusCode == HttpStatus.noContent ||
+        res.statusCode == HttpStatus.notFound) {
+      return [];
+    }
+    if (res.statusCode == HttpStatus.unauthorized) {
+      throw Exception('Unauthorized (401) on interactions/query/');
+    }
     throw Exception('Query failed (${res.statusCode}): ${res.body}');
+  }
+
+  @override
+  Future<Map<String, dynamic>> addInteraction(AddInteractionInput input) async {
+    final res = await _post('interaction/', input.toJson());
+
+    if (res.statusCode != HttpStatus.ok) {
+      if (res.statusCode == HttpStatus.unauthorized) {
+        throw Exception('Unauthorized (401) on POST /interaction/');
+      }
+      throw Exception('Add interaction failed (${res.statusCode}): ${res.body}');
+    }
+
+    final body = res.body.trim();
+    if (body.isEmpty) return <String, dynamic>{};
+
+    final decoded = jsonDecode(body);
+    if (decoded is Map) return Map<String, dynamic>.from(decoded);
+    throw Exception('Unexpected response shape for POST /interaction/');
   }
 }
