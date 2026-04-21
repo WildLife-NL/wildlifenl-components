@@ -1,6 +1,6 @@
-# wildlifenl_interaction_components
+﻿# wildlifenl_interaction_components
 
-API voor het ophalen van interactions: "mijn interactions" (GET interactions/me/) en gebiedsquery (GET interactions/query/). Geschikt voor Wild Rapport, WildManager en andere apps die dezelfde backend gebruiken.
+API voor interactions: ophalen van "mijn interactions" (GET `interactions/me/`), filterquery (GET `interactions/`) en toevoegen (POST `interaction/`). Geschikt voor Wild Rapport, WildManager en andere apps die dezelfde backend gebruiken.
 
 ## Gebruik
 
@@ -17,10 +17,10 @@ dependencies:
 
 ### Interface + standaardimplementatie
 
-- **InteractionReadApiInterface** – `getMyInteractions()` en `queryInteractions(...)`.
+- **InteractionReadApiInterface** – `getMyInteractions()`, `queryInteractions(...)`, `addInteraction(...)`.
 - **HttpInteractionReadApi** – gebruikt `baseUrl` en Bearer token uit SharedPreferences (`bearer_token`).
 
-De API retourneert **lijsten van `Map<String, dynamic>`** (ruwe JSON). De app parsed die met eigen modellen (bijv. `MyInteraction.fromJson(map)`, `InteractionQueryResult.fromJson(map)`).
+De API retourneert lijsten van `Map<String, dynamic>` (ruwe JSON) voor GETs. De app kan die zelf parsen met eigen modellen.
 
 ### Voorbeeld
 
@@ -31,16 +31,46 @@ final api = HttpInteractionReadApi(baseUrl: 'https://api.example.com');
 
 // Mijn interactions
 final list = await api.getMyInteractions();
-final myInteractions = list.map((e) => MyInteraction.fromJson(e)).toList();
 
-// Query op gebied
+// Query op gebied (GET /interactions/ met start/end/latitude/longitude/radius)
 final queryList = await api.queryInteractions(
-  areaLatitude: 52.0,
-  areaLongitude: 5.0,
-  areaRadiusMeters: 5000,
-  momentAfter: DateTime.now().subtract(Duration(days: 30)),
+  latitude: 52.0,
+  longitude: 5.0,
+  radius: 5000,
+  start: DateTime.now().subtract(const Duration(days: 30)),
+  end: DateTime.now(),
 );
-final results = queryList.map((e) => InteractionQueryResult.fromJson(e)).toList();
+
+// Nieuwe interaction toevoegen (POST /interaction/)
+final created = await api.addInteraction(
+  AddInteractionInput(
+    description: 'Vos gezien bij wegberm',
+    location: const InteractionGeoPointInput(latitude: 52.1, longitude: 5.1),
+    place: const InteractionGeoPointInput(latitude: 52.1, longitude: 5.1),
+    moment: DateTime.now(),
+    typeID: 1,
+    reportOfSighting: const InteractionReportOfSightingInput(
+      speciesID: 'species-uuid',
+      involvedAnimals: null,
+    ),
+  ),
+);
 ```
 
-Send interaction (POST interaction/) blijft app-specifiek (verschillende report-typen per app) en zit niet in deze package.
+### Typed schema-models (optioneel)
+
+Voor het nieuwe Interaction API-schema kun je typed records gebruiken:
+
+- `InteractionRecord`
+- `InteractionGeoPoint`
+- `InteractionTypeInfo`
+- `InteractionUserInfo`
+- `InteractionSpeciesInfo`
+- `InteractionQuestionnaireInfo`
+- `parseInteractionRecords(...)`
+
+```dart
+final raw = await api.getMyInteractions();
+final interactions = parseInteractionRecords(raw);
+final createdRecord = InteractionRecord.fromJson(created);
+```

@@ -1,16 +1,28 @@
-/// Interface voor het ophalen van interactions: "mijn" lijst en gebiedsquery.
+﻿import '../models/add_interaction_input.dart';
+
+/// Interface voor interactions: ophalen en toevoegen.
 abstract class InteractionReadApiInterface {
   /// GET interactions/me/ – lijst van interactions van de ingelogde gebruiker.
   /// Retourneert ruwe JSON-objecten; de app kan die met eigen modellen parsen.
   Future<List<Map<String, dynamic>>> getMyInteractions();
 
-  /// GET interactions/query/?area_latitude=...&area_longitude=...&area_radius=... (optioneel moment_after, moment_before).
-  /// Retourneert ruwe JSON-objecten voor de app om te parsen (bijv. InteractionQueryResult.fromJson).
+  /// GET interactions/ met spatiotemporele filter.
+  ///
+  /// Vereist: [latitude], [longitude], [radius], [start], [end].
+  ///
+  /// Backward-compat: [momentAfter]/[momentBefore] worden ondersteund en mappen
+  /// intern naar [start]/[end] als die niet zijn opgegeven.
   Future<List<Map<String, dynamic>>> queryInteractions({
-    required double areaLatitude,
-    required double areaLongitude,
-    required int areaRadiusMeters,
-    DateTime? momentAfter,
-    DateTime? momentBefore,
+    required double latitude,
+    required double longitude,
+    required int radius,
+    DateTime? start,
+    DateTime? end,
+    @Deprecated('Gebruik start') DateTime? momentAfter,
+    @Deprecated('Gebruik end') DateTime? momentBefore,
   });
+
+  /// POST interaction/ – submit een nieuwe interaction.
+  /// Retourneert het aangemaakte interaction-object (ruwe JSON).
+  Future<Map<String, dynamic>> addInteraction(AddInteractionInput input);
 }
