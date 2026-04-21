@@ -1,5 +1,5 @@
 name: wildlifenl_detection_components
-description: WildLifeNL Detections – API voor GET /detection/ (detections binnen spatiotemporele span). Herbruikbaar voor Wild Rapport, WildManager en andere apps.
+description: WildLifeNL Detections – API voor GET /detections/ (detections binnen spatiotemporele span). Herbruikbaar voor Wild Rapport, WildManager en andere apps.
 version: 0.1.0
 publish_to: none
 

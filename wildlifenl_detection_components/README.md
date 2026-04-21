@@ -1,6 +1,6 @@
 # wildlifenl_detection_components
 
-API voor **Get Detections By Filter**: GET `/detection/` – detections binnen een spatiotemporele span. Geschikt voor Wild Rapport, WildManager en andere apps die dezelfde backend gebruiken.
+API voor **Get Detections By Filter**: GET `/detections/` – detections binnen een spatiotemporele span. Geschikt voor Wild Rapport, WildManager en andere apps die dezelfde backend gebruiken.
 
 **Scopes:** nature-area-manager, wildlife-manager, herd-manager.
 

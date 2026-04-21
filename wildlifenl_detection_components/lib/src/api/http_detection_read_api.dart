@@ -49,13 +49,13 @@ class HttpDetectionReadApi implements DetectionReadApiInterface {
       'radius': radius.toString(),
     };
     final query = Uri(queryParameters: params).query;
-    final path = 'detection/?$query';
+    final path = 'detections/?$query';
     final res = await _get(path);
 
     if (res.statusCode != HttpStatus.ok) {
       print('[HttpDetectionReadApi] getDetectionsByFilter: ${res.statusCode}');
       if (res.statusCode == 401) {
-        throw Exception('Unauthorized (401) on GET /detection/');
+        throw Exception('Unauthorized (401) on GET /detections/');
       }
       throw Exception('Failed to get detections: ${res.statusCode}');
     }
