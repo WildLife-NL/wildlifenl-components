@@ -32,9 +32,9 @@ await manager.determinePosition();
 manager.animateToLocation(mapController: ctrl, targetLocation: latlng, targetZoom: 14, vsync: this);
 ```
 
-### Standaardkaart (CARTO Voyager) - aanbevolen: gebruik [WildLifeNLMap]
+### Standaardkaart (OpenTopoMap) - aanbevolen: gebruik [WildLifeNLMap]
 
-Om **altijd** CARTO Voyager (OpenStreetMap-data) en de juiste bronvermelding te tonen, gebruik de gedeelde widget **WildLifeNLMap**. Die zet zelf de juiste TileLayer + subdomains + attribution; je hoeft geen URL meer te kiezen.
+Om **altijd** OpenTopoMap (OpenStreetMap-data, geen API-key) en de juiste bronvermelding te tonen, gebruik de gedeelde widget **WildLifeNLMap**. Die zet zelf de juiste TileLayer + subdomains + attribution; je hoeft geen URL meer te kiezen.
 
 ```dart
 import 'package:wildlifenl_map_logic_components/wildlifenl_map_logic_components.dart';
@@ -53,7 +53,7 @@ WildLifeNLMap(
 )
 ```
 
-Vervang je bestaande `FlutterMap` + `TileLayer` in de app door deze widget; dan verdwijnt de oude OpenStreetMap-tegels en zie je CARTO Voyager met bronvermelding.
+Vervang je bestaande `FlutterMap` + `TileLayer` in de app door deze widget; dan krijg je OpenTopoMap met bronvermelding.
 
 Handmatig (als je toch zelf FlutterMap bouwt): gebruik `MapStateInterface.standardTileUrl` + `standardTileSubdomains` en zet `StandardMapAttribution()` in `nonRotatedChildren`.
 

@@ -3,7 +3,7 @@ import 'package:flutter_map/flutter_map.dart';
 
 import '../interfaces/map_state_interface.dart';
 
-/// Standaard naamsvermelding voor de CartoDB Light-kaartlaag (OSM-data).
+/// Standaard naamsvermelding voor de OpenTopoMap-kaartlaag (OSM-data).
 class StandardMapAttribution extends StatelessWidget {
   const StandardMapAttribution({super.key});
 
@@ -14,11 +14,11 @@ class StandardMapAttribution extends StatelessWidget {
       alignment: AttributionAlignment.bottomRight,
       attributions: const [
         TextSourceAttribution(
-          'OpenStreetMap contributors',
+          'OpenTopoMap',
           textStyle: TextStyle(fontSize: 12),
         ),
         TextSourceAttribution(
-          'CartoDB',
+          'OpenStreetMap contributors',
           textStyle: TextStyle(fontSize: 12),
         ),
       ],

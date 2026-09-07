@@ -7,22 +7,24 @@ abstract class MapStateInterface {
   /// Default centrum wanneer geen locatie beschikbaar (bijv. Nederland).
   static const LatLng defaultCenter = LatLng(52.088130, 5.170465);
 
-  /// CARTO Light (OpenStreetMap-data) als standaard tegellaag.
+  /// OpenTopoMap (OpenStreetMap-data) als standaard tegellaag.
+  /// Geen API-key; max native zoom ~17.
+  /// (Vervangt Carto Voyager: die toonde "API KEY REQUIRED" zonder key.)
   static const String standardTileUrl =
-      'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
+      'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png';
 
-  /// Subdomains voor CARTO tile endpoint.
-  static const List<String> standardTileSubdomains = ['a', 'b', 'c', 'd'];
+  /// Subdomains voor OpenTopoMap tile endpoint.
+  static const List<String> standardTileSubdomains = ['a', 'b', 'c'];
 
   /// Satellite/imagery tiles.
   static const String satelliteTileUrl =
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
 
-  /// Tekst voor naamsvermelding standaardlaag (OpenStreetMap + CARTO). Gebruik
-  /// in [RichAttributionWidget] of [SimpleAttributionWidget] in
+  /// Tekst voor naamsvermelding standaardlaag (OpenStreetMap + OpenTopoMap).
+  /// Gebruik in [RichAttributionWidget] of [SimpleAttributionWidget] in
   /// `FlutterMap.children`.
   static const String standardAttributionText =
-      '\u00A9 OpenStreetMap contributors \u00B7 \u00A9 CartoDB';
+      '\u00A9 OpenTopoMap \u00B7 \u00A9 OpenStreetMap contributors';
 
   void constrainMapCamera(MapController mapController);
 
@@ -34,4 +36,3 @@ abstract class MapStateInterface {
     Duration duration = const Duration(milliseconds: 500),
   });
 }
-

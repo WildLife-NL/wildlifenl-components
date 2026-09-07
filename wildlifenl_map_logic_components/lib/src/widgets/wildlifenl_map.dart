@@ -4,8 +4,8 @@ import 'package:flutter_map/flutter_map.dart';
 import '../interfaces/map_state_interface.dart';
 import 'standard_map_attribution.dart';
 
-/// Gedeelde kaartwidget met CARTO Voyager als standaard tegellaag en
-/// bronvermelding (OpenStreetMap contributors · CartoDB).
+/// Gedeelde kaartwidget met OpenTopoMap als standaard tegellaag en
+/// bronvermelding (OpenTopoMap · OpenStreetMap contributors).
 ///
 /// Gebruik deze widget in Wild Rapport / WildManager in plaats van een
 /// handmatige [FlutterMap] + [TileLayer].
@@ -54,6 +54,7 @@ class WildLifeNLMap extends StatelessWidget {
         subdomains: MapStateInterface.standardTileSubdomains,
         userAgentPackageName: userAgentPackageName,
         retinaMode: RetinaMode.isHighDensity(context),
+        maxNativeZoom: 17,
       ),
       ...extraLayers,
       const SimpleStandardMapAttribution(),
